@@ -20,8 +20,10 @@ public class TestApplication {
     public CommandLineRunner run(ApplicationContext ctx, Environment environment) {
         return args -> {
             // Spring Boot에서 실행되는 포트를 출력
+            System.out.println("=====================================");
             String port = environment.getProperty("local.server.port");
             System.out.println("Application is running on port: " + port);
+            System.out.println("=====================================");
         };
     }
 }

@@ -18,11 +18,11 @@ public class B_comment {
     @Column(name="C_IDX", nullable=false, unique=true)    
     private int cIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY) // USER_IDX 외래키 관계 설정
+    @ManyToOne(fetch = FetchType.EAGER) // USER_IDX 외래키 관계 설정
     @JoinColumn(name = "USER_IDX", nullable = false)
     private User user; 
 
-    @ManyToOne(fetch = FetchType.LAZY) // B_IDX 외래키 관계 설정
+    @ManyToOne(fetch = FetchType.EAGER) // B_IDX 외래키 관계 설정
     @JoinColumn(name = "B_IDX", nullable = false)
     private Board board; 
 
@@ -31,4 +31,26 @@ public class B_comment {
     @Column(name = "COM_CONTENT", nullable = false)
     private String comContent;
 
+
+    public B_comment(User user, Board board, String comContent) {
+        this.user = user;
+        this.board = board;
+        this.comContent = comContent;
+        this.cDate = LocalDateTime.now();
+    }
+    public int getcIdx() {
+        return cIdx;
+    }
+    public void setcIdx(int cIdx) {
+        this.cIdx = cIdx;
+    }
+    public LocalDateTime getcDate() {
+        return cDate;
+    }
+    public void setcDate(LocalDateTime cDate) {
+        this.cDate = cDate;
+    }
+
+
+    
 }
