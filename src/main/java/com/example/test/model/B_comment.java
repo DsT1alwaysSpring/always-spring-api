@@ -14,7 +14,7 @@ import lombok.*;
 
 public class B_comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정(MySql에서 사용 가능)
     @Column(name="C_IDX", nullable=false, unique=true)    
     private int cIdx;
 

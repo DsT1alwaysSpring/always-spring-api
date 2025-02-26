@@ -1,6 +1,7 @@
 package com.example.test.controller;
 
 import com.example.test.model.User;
+import com.example.test.repository.BoardRepository;
 import com.example.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BoardRepository boardRepository;
 
     // ✅ 모든 회원 조회 (GET /api/user)
     @GetMapping
@@ -33,6 +37,8 @@ public class UserController {
             return ResponseEntity.notFound().build(); // 리스트가 비어 있으면 404 Not Found 반환
         }
     }
+
+
     
 
 

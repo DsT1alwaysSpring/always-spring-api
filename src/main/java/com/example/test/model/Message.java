@@ -16,31 +16,30 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
     @Column(name="M_IDX", nullable=false, unique=true)    
-    private int m_idx;
+    private int mIdx;
 
     @Column(name="USER_IDX", nullable=false)    
-    private int user_idx;
+    private int userIdx;
 
     @Column(name="CHAT_ROOM_IDX", nullable=false)    
-    private int chat_room_idx;
+    private int chatRoomIdx;
 
     @Column(name = "M_CONTENT")
-    private String m_content;
+    private String mContent;
 
     @Column(name = "M_DATETIME")
-    private LocalDateTime m_datetime;
+    private LocalDateTime mDatetime;
 
-    public Message(int m_idx, int user_idx, String m_content) {
-        this.m_idx = m_idx;
-        this.user_idx = user_idx;
-        this.m_content = m_content;
+    public Message(int userIdx, String m_content) {
+        this.userIdx = userIdx;
+        this.mContent = m_content;
 
-        this.chat_room_idx += 1;
-        this.m_datetime = LocalDateTime.now();
+        this.chatRoomIdx += 1;
+        this.mDatetime = LocalDateTime.now();
     }
 
-    public void setId(int user_idx) {
-        this.user_idx = user_idx;
+    public void setId(int userIdx) {
+        this.userIdx = userIdx;
     }
 
 
