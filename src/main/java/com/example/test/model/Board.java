@@ -14,9 +14,10 @@ import lombok.*;
 
 public class Board {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_seq")    // 인덱스 증가
+    @SequenceGenerator(name = "board_seq", sequenceName = "BOARD_SEQ", allocationSize = 1)
     @Column(name = "B_IDX", nullable = false, unique = true)
-    private int bIdx; 
+    private int bIdx;
 
     @ManyToOne(fetch = FetchType.EAGER) // USER_IDX 외래키 관계 설정
     @JoinColumn(name = "USER_IDX", nullable = false)
@@ -42,6 +43,7 @@ public class Board {
 
     @Column(name = "B_STATE")
     private String bState; 
+
 
     public int getbIdx() {
         return bIdx;
