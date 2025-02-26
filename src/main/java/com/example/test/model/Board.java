@@ -16,11 +16,11 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
     @Column(name = "B_IDX", nullable = false, unique = true)
-    private int bIdx; // Java에서는 카멜 케이스 사용
+    private int bIdx; 
 
-    @ManyToOne(fetch = FetchType.LAZY) // USER_IDX 외래키 관계 설정
+    @ManyToOne(fetch = FetchType.EAGER) // USER_IDX 외래키 관계 설정
     @JoinColumn(name = "USER_IDX", nullable = false)
-    private User user; // User 엔티티와의 관계
+    private User user; 
 
     @Column(name = "TITLE", nullable = false)
     private String title;
@@ -40,24 +40,48 @@ public class Board {
     @Column(name = "B_E_PERIOD")
     private LocalDateTime bEPeriod; 
 
-    @Enumerated(EnumType.STRING) // B_STATE를 Enum으로 처리
     @Column(name = "B_STATE")
-    private BoardState bState; 
+    private String bState; 
 
-    // B_STATE를 Enum으로 정의
-    public enum BoardState {
-    PROGRESS("진행중"),
-    CLOSED("마감");
-
-    private String description;
-
-    BoardState(String description) {
-        this.description = description;
+    public int getbIdx() {
+        return bIdx;
     }
 
-    public String getDescription() {
-        return description;
+    public void setbIdx(int bIdx) {
+        this.bIdx = bIdx;
     }
-}
+
+    public LocalDateTime getbDatetime() {
+        return bDatetime;
+    }
+
+    public void setbDatetime(LocalDateTime bDatetime) {
+        this.bDatetime = bDatetime;
+    }
+
+    public LocalDateTime getbSPeriod() {
+        return bSPeriod;
+    }
+
+    public void setbSPeriod(LocalDateTime bSPeriod) {
+        this.bSPeriod = bSPeriod;
+    }
+
+    public LocalDateTime getbEPeriod() {
+        return bEPeriod;
+    }
+
+    public void setbEPeriod(LocalDateTime bEPeriod) {
+        this.bEPeriod = bEPeriod;
+    }
+
+    public String getbState() {
+        return bState;
+    }
+
+    public void setbState(String bState) {
+        this.bState = bState;
+    }
+    
 }
 
