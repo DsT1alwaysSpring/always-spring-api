@@ -67,6 +67,11 @@ public class User {
         // this.purpose = (appeal != null) ? purpose : "미선택";
     // }
     
-
+    public int getuserIdx() {
+        return userIdx;
+    }
+    public void setusreIdx(int userIdx) {
+        this.userIdx = userIdx;
+    }
     
 }

@@ -14,7 +14,8 @@ import lombok.*;
 
 public class B_comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정(MySql에서 사용 가능)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cIdx_seq")    // 인덱스 증가
+    @SequenceGenerator(name = "cIdx_seq", sequenceName = "CIDX_SEQ", allocationSize = 1)
     @Column(name="C_IDX", nullable=false, unique=true)    
     private int cIdx;
 
@@ -50,7 +51,5 @@ public class B_comment {
     public void setcDate(LocalDateTime cDate) {
         this.cDate = cDate;
     }
-
-
     
 }
