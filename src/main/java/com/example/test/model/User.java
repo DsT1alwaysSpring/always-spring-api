@@ -70,6 +70,7 @@ public class User {
     public int getuserIdx() {
         return userIdx;
     }
+    
     public void setusreIdx(int userIdx) {
         this.userIdx = userIdx;
     }

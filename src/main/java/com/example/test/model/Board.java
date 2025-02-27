@@ -32,8 +32,8 @@ public class Board {
     @Column(name = "B_DATETIME", nullable = false)
     private LocalDateTime bDatetime; 
 
-    @Column(name = "VIEWS", nullable = false)
-    private int views;
+    @Column(name = "VIEWS")
+    private Integer views;
 
     @Column(name = "B_S_PERIOD")
     private LocalDateTime bSPeriod; 

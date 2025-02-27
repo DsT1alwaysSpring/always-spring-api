@@ -14,7 +14,8 @@ import lombok.*;
 
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_seq")   
+    @SequenceGenerator(name = "m_seq", sequenceName = "M_SEQ", allocationSize = 1)
     @Column(name="M_IDX", nullable=false, unique=true)    
     private int mIdx;
 
