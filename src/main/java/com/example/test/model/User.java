@@ -14,7 +14,8 @@ import lombok.*;
 
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")    // 인덱스 증가
+    @SequenceGenerator(name = "user_seq", sequenceName = "USER_SEQ", allocationSize = 1)
     @Column(name="USER_IDX", nullable=false, unique=true)    
     private int userIdx;
     

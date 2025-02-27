@@ -1,10 +1,10 @@
 package com.example.test.controller;
 
 import com.example.test.model.User;
-import com.example.test.repository.BoardRepository;
 import com.example.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +17,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private BoardRepository boardRepository;
 
     // ✅ 모든 회원 조회 (GET /api/user)
     @GetMapping
@@ -38,40 +36,34 @@ public class UserController {
         }
     }
 
+    // ✅ 회원 추가 (POST /api/user)
+    @PostMapping("/create")
+    public User createUser(@RequestBody User user) {
+        return userRepository.save(user);
+    }
 
-    
+    // ✅ 회원 수정 (PUT /api/user/{id})
+    @PutMapping("/{userIdx}")
+    public User updateMember(@PathVariable int userIdx, @RequestBody User userDetails) {
+        return userRepository.findById(userIdx).map(user -> {
+            user.setName(userDetails.getName());
+            user.setNickname(userDetails.getNickname());
+            user.setPhone(userDetails.getPhone());
+            user.setAddress(userDetails.getAddress());
+            user.setPassword(userDetails.getPassword());
+            user.setProfile(userDetails.getProfile());
+            user.setAppeal(userDetails.getAppeal());
+            user.setKeyword(userDetails.getKeyword());
+            user.setPurpose(userDetails.getPurpose());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("회원 찾을 수 없음"));
+    }
 
+    // ✅ 회원 삭제 (DELETE /api/user/{idx})
+    @Transactional
+    @DeleteMapping("/{userIdx}")
+    public void deleteUser(@PathVariable int userIdx) {
+        userRepository.deleteByuserIdx(userIdx);
+    }
 
-    // // ✅ 회원 추가 (POST /api/members)
-    // @PostMapping
-    // public User createMember(@RequestBody User user) {
-    //     return userRepository.save(user);
-    // }
-
-    // ✅ 회원 수정 (PUT /api/members/{id})
-    // @PutMapping("/{id}")
-    // public User updateMember(@PathVariable String id, @RequestBody User memberDetails) {
-    //     return userRepository.findById(id).map(member -> {
-    //         member.setName(memberDetails.getName());
-    //         member.setAge(memberDetails.getAge());
-    //         member.setPhone(memberDetails.getPhone());
-    //         member.setAddress(memberDetails.getAddress());
-    //         member.setGender(memberDetails.getGender());
-    //         member.setManager(memberDetails.getManager());
-    //         member.setPassword(memberDetails.getPassword());
-    //         return memberRepository.save(member);
-    //     }).orElseThrow(() -> new RuntimeException("회원 찾을 수 없음"));
-    // }
-
-    // ✅ 회원 삭제 (DELETE /api/members/{id})
-    // @DeleteMapping("/{id}")
-    // public void deleteMember(@PathVariable String id) {
-    //     userRepository.deleteById(id);
-    // }
-
-    // ✅ 로그인 기능 (GET /api/login)
-    // @GetMapping("/login")
-    // public Optional<User> login(@RequestParam String phone, @RequestParam String password) {
-    //     return userRepository.findByMemberNumAndPassword(phone, password);
-    // }
 }
