@@ -17,10 +17,7 @@ public interface MessageRepository  extends JpaRepository<Message, Integer> {
     List<Message> findByChatRoomIdx(int chatRoomIdx, Sort sort);
 
     // 두 사용자의 채팅방을 찾는 쿼리
-    Optional<Message> findByUser1_UserIdxAndUser2_UserIdx(int userIdx1, int userIdx2);
-
-    // userIdx로 해당 채팅방들의 chatRoomIdx를 조회하는 메서드
-    List<Message> findByUser_UserIdx(int userIdx);
+    //Optional<Message> findByUser1_UserIdxAndUser2_UserIdx(int userIdx1, int userIdx2);
 
     // 가장 큰 chatRoomIdx를 가져오는 메서드
     Optional<Message> findTopByOrderByChatRoomIdxDesc(); 
@@ -32,4 +29,5 @@ public interface MessageRepository  extends JpaRepository<Message, Integer> {
     // mIdx로 메시지 삭제
     @Transactional
     void deleteBymIdx(int chatRoomIdx);
+
 }
