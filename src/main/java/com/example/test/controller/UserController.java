@@ -17,6 +17,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    public User getUser(int userIdx) {
+        return userRepository.findByUserIdx(userIdx);
+    }
 
     // ✅ 모든 회원 조회 (GET /api/user)
     @GetMapping

@@ -43,6 +43,29 @@ public class Message {
         this.userIdx = userIdx;
     }
 
+    public int getmIdx() {
+        return mIdx;
+    }
 
+    public void setmIdx(int mIdx) {
+        this.mIdx = mIdx;
+    }
+
+    public String getmContent() {
+        return mContent;
+    }
+
+    public void setmContent(String mContent) {
+        this.mContent = mContent;
+    }
+
+    public LocalDateTime getmDatetime() {
+        return mDatetime;
+    }
+
+    public void setmDatetime(LocalDateTime mDatetime) {
+        this.mDatetime = mDatetime;
+    }
+    
     
 }

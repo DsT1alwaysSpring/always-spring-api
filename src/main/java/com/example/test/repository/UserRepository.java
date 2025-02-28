@@ -12,6 +12,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     //휴대폰으로 회원 조회
     List<User> findByPhone(String phone);
 
+    //idx로 사용자 정보 조회
+    User findByUserIdx(int userIdx);
+
     //휴대폰과 비밀번호로 회원 데이터 조회
     Optional<User> findByPhoneAndPassword(String phone, String password);
 

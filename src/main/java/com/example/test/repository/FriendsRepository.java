@@ -1,5 +1,6 @@
 package com.example.test.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,10 +11,14 @@ import org.springframework.stereotype.Repository;
 
 import com.example.test.model.Friends;
 
-
-
 @Repository
 public interface FriendsRepository extends JpaRepository<Friends, Integer> {
+
+    // 친구 리스트 조회
+    List<Friends> findByUser_UserIdx(int userIdx);
+
+    // userIdx가 일치하고, friendRequestStatus가 1인 친구들 찾기
+    List<Friends> findByUser_UserIdxAndFriendRequestStatus(int userIdx, String friendRequestStatus);
 
     // 사용자 id (userIdx)와 친구 id (friendIdx)를 이용해 친구 관계 조회
     @Query("SELECT f FROM Friends f WHERE f.user.id = :userIdx AND f.fUser = :fIdx")
