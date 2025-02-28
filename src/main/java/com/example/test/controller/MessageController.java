@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.test.model.Message;
 import com.example.test.repository.MessageRepository;
-import com.example.test.repository.UserRepository;
 
 @CrossOrigin(origins = "*")  // CORS 허용
 @RestController
@@ -20,8 +20,20 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    // 본인이 속한 채팅방 리스트 출력
+    // @GetMapping("/chatRoomData/{userIdx}")
+    // public ResponseEntity<List<Message>> getAllChatRoomIdxByUserIdx(@PathVariable int userIdx) {
+    //     // 메시지를 채팅방 idx로 조회하고, mDatetime 기준으로 오름차순 정렬
+    //     List<Message> messages = messageRepository.findByChatRoom_userIdx(
+    //         userIdx, Sort.by(Order.asc("mDatetime")) 
+    //     );
+        
+    //     if (messages.isEmpty()) {
+    //         return ResponseEntity.notFound().build(); // 메시지가 없으면 404
+    //     }
+
+    //     return ResponseEntity.ok(messages); // 메시지 있으면 200 OK와 함께 반환
+    // }
 
     // ✅ 채팅방으로 대화 조회
     @GetMapping("/chatRoom/{chatRoomIdx}")
@@ -46,7 +58,9 @@ public class MessageController {
     //     // 해당 리스트끼리 일치하는 값 있으면, exist(boolean) 값 true -> if(!exist){return 0;} 
     //     //else{동시에 같은 useridx1과 useridx2가 chatroomidx(현재 가장 높은 값 조회 + 1)를 가지도록 설정 후 message 생성}
     //     boolean exist = messageRepository.findByUser1_UserIdxAndUser2_UserIdx(userIdx1, userIdx2);
-    //     if(exist)
+    //     if(!exist){
+
+    //     }
 
     //     Message savedMessage = messageRepository.save(message);
     //     return ResponseEntity.ok(savedMessage);
@@ -71,7 +85,7 @@ public class MessageController {
         return ResponseEntity.ok("Messages deleted successfully.");
     }
 
-    // ✅ chatroomIdx로 채팅방 색제
+    // ✅ chatroomIdx로 채팅방 삭제
     @DeleteMapping("/deleteChatRoom/{chatRoomIdx}") 
     public ResponseEntity<String> deleteMessages(@PathVariable int chatRoomIdx) {
         messageRepository.deleteByChatRoomIdx(chatRoomIdx);
