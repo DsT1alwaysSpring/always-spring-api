@@ -65,12 +65,31 @@ public class BoardController {
         }
     }
 
+    // // ✅ 게시물 생성 (POST /api/board) -> JSON 방식
+    // @PostMapping
+    // public Board createBoard(@RequestBody Board board) {
+    //     board.setbDatetime(LocalDateTime.now());
+    //     return boardRepository.save(board);  
+    // }
     // ✅ 게시물 생성 (POST /api/board) -> JSON 방식
     @PostMapping
     public Board createBoard(@RequestBody Board board) {
+        // 클라이언트에서 전달된 요청 데이터 로그 출력
+        System.out.println("Received Board Data:");
+        System.out.println("Title: " + board.getTitle());
+        System.out.println("Content: " + board.getContent());
+        System.out.println("User: " + (board.getUser() != null ? board.getUser().getUser_idx() : "No User"));
+        
+        // 게시물 생성 시간 설정
         board.setbDatetime(LocalDateTime.now());
-        return boardRepository.save(board);  
+        
+        // 저장된 데이터 로그 출력
+        Board savedBoard = boardRepository.save(board);
+        System.out.println("Saved Board ID: " + savedBoard.getbIdx());
+        return savedBoard;
     }
+
+    
 
     // ✅ 특정 게시물 bIdx로 조회 (GET /api/board/bIdx?board={bIdx})
     @GetMapping("/bIdx")
@@ -87,7 +106,7 @@ public class BoardController {
     // ✅ 게시물 수정 (PUT /api/board/{bIdx})
     @PutMapping("/{bIdx}")
     public ResponseEntity<Board> updateBoard(@PathVariable int bIdx, @RequestBody Board updatedBoard) {
-        Optional<Board> existingBoard = boardRepository.findById(bIdx);
+        Optional<Board> existingBoard = boardRepository.findById(bIdx); 
 
         if (existingBoard.isPresent()) {
             Board board = existingBoard.get();
