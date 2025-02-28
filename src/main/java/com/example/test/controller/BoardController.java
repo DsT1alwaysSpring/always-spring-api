@@ -100,7 +100,7 @@ public class BoardController {
         } else {
             return ResponseEntity.notFound().build();  
         }
-    }
+    } 
 
     // ✅ 게시물 삭제 (DELETE /api/board/{bIdx})
     @DeleteMapping("/{bIdx}")
