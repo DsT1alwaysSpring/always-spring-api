@@ -29,7 +29,7 @@ public interface MessageRepository  extends JpaRepository<Message, Integer> {
     List<Integer> findChatRoomIdxByUserIdx(@Param("userIdx") int userIdx);
 
     //본인이 속한 채팅방의 상대방의 이름과 닉네임 출력
-    @Query("SELECT u.name, u.nickname FROM User u " +
+    @Query("SELECT u.userIdx, u.name, u.nickname FROM User u " +
     "WHERE u.userIdx IN (" +  // 상대방을 찾기 위해 User 테이블의 userIdx를 조회
     "    SELECT m.user.userIdx " +  // 해당 채팅방에서 상대방 userIdx를 가져옴
     "    FROM Message m " +
@@ -41,8 +41,6 @@ public interface MessageRepository  extends JpaRepository<Message, Integer> {
     "    AND m.user.userIdx != :userIdx" +  // 본인 제외, 즉 상대방
     ")")
     List<String> findFriendNicknamesByUserIdx(@Param("userIdx") int userIdx);
-
-
 
     // chatRoomIdx로 채팅방 삭제
     @Transactional
