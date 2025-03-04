@@ -67,13 +67,6 @@ public class BoardController {
         }
     }
 
-    // // ✅ 게시물 생성 (POST /api/board) -> JSON 방식
-    // @PostMapping
-    // public Board createBoard(@RequestBody Board board) {
-    //     board.setbDatetime(LocalDateTime.now());
-    //     return boardRepository.save(board);  
-    // }
-
     // ✅ 게시물 생성 (POST /api/board)
     @PostMapping
     public ResponseEntity<?> createBoard(@RequestBody Map<String, Object> requestData) {
@@ -101,13 +94,20 @@ public class BoardController {
         }
     }
 
-    public Board createBoard(@RequestBody Board board) {
-        if (board.getUser() == null) {
-            throw new IllegalArgumentException("User cannot be null");
-        }
-        board.setbDatetime(LocalDateTime.now());
-        return boardRepository.save(board);  
-    }
+    // public Board createBoard(@RequestBody Board board) {
+    //     if (board.getUser() == null) {
+    //         throw new IllegalArgumentException("User cannot be null");
+    //     }
+    //     board.setbDatetime(LocalDateTime.now());
+    //     return boardRepository.save(board);  
+    // }
+
+    // ✅ 게시물 생성 (POST /api/board) -> JSON 방식
+    // @PostMapping
+    // public Board createBoard(@RequestBody Board board) {
+    //     board.setbDatetime(LocalDateTime.now());
+    //     return boardRepository.save(board);  
+    // }
     
 
     // ✅ 특정 게시물 bIdx로 조회 (GET /api/board/bIdx?board={bIdx})

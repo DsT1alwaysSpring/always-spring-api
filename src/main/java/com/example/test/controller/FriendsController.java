@@ -1,6 +1,9 @@
 package com.example.test.controller;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,24 +32,56 @@ public class FriendsController {
 
     // ✅ 사용자 친구(대기/승인 모두) 조회 (GET /api/friends)
     @GetMapping("/all/{userIdx}")
-    public ResponseEntity<List<Friends>> getFriendsByUserId(@PathVariable int userIdx) {
+    public ResponseEntity<List<Map<String, Object>>> getFriendsByUserId(@PathVariable int userIdx) {
         List<Friends> friends = friendsRepository.findByUser_UserIdx(userIdx); 
         if (friends.isEmpty()) {
             return ResponseEntity.notFound().build();  // 친구가 없으면 404 반환
         }
 
-        return ResponseEntity.ok(friends);  // 친구 리스트가 있으면 200 OK와 함께 반환
+            List<Map<String, Object>> result = new ArrayList<>();
+         
+            for (Friends friend : friends) {
+                Map<String, Object> friendInfo = new HashMap<>();
+                friendInfo.put("friend", friend);
+                
+                User friendUser = userController.getUser(friend.getfUser());  
+                if (friendUser != null) {
+                    friendInfo.put("friendName", friendUser.getName());  
+                } else {
+                    continue;
+                }
+
+                result.add(friendInfo);
+            }
+
+        return ResponseEntity.ok(result);  
     }
     
     // ✅ 사용자 친구(승락) 조회 (GET /api/friends)
     @GetMapping("/{userIdx}")
-    public ResponseEntity<List<Friends>> getFriendsByUserIdAndStatus(@PathVariable int userIdx) {
+    public ResponseEntity<List<Map<String, Object>>> getFriendsByUserIdAndStatus(@PathVariable int userIdx) {
         List<Friends> friends = friendsRepository.findByUser_UserIdxAndFriendRequestStatus(userIdx, "1"); 
         if (friends.isEmpty()) {
             return ResponseEntity.notFound().build();  // 친구가 없으면 404 반환
         }
 
-        return ResponseEntity.ok(friends);  // 친구 리스트가 있으면 200 OK와 함께 반환
+        List<Map<String, Object>> result = new ArrayList<>();
+         
+        for (Friends friend : friends) {
+            Map<String, Object> friendInfo = new HashMap<>();
+            friendInfo.put("friend", friend);
+            
+            User friendUser = userController.getUser(friend.getfUser());  
+            if (friendUser != null) {
+                friendInfo.put("friendName", friendUser.getName());
+            } else {
+                continue;
+            }
+
+            result.add(friendInfo);
+        }
+
+        return ResponseEntity.ok(result); 
     }
 
     // ✅ 친구 추천 : 같은 지역에 사는 사용자를 친구로 추천

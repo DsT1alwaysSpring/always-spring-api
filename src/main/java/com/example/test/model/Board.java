@@ -100,11 +100,6 @@ public class Board {
     public void setbState(String bState) {
         this.bState = bState;
     }
-
-    public void setUser_idx(Long userIdx) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setUser_idx'");
-    }
     
 }
 
