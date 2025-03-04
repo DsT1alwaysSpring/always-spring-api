@@ -76,42 +76,38 @@ public class BoardController {
 
     // ✅ 게시물 생성 (POST /api/board)
     @PostMapping
-<<<<<<< HEAD
     public ResponseEntity<?> createBoard(@RequestBody Map<String, Object> requestData) {
         try {
-            Long userIdx = ((Number) requestData.get("user_idx")).longValue();
+            Integer userIdx = (int) requestData.get("user_idx");
             String title = (String) requestData.get("title");
             String content = (String) requestData.get("content");
     
             if (userIdx == null || title == null || content == null) {
                 return ResponseEntity.badRequest().body("User, title, and content are required.");
             }
+
+            User user = userRepository.findById(userIdx).orElseThrow(() -> new RuntimeException("User not found"));
     
             Board board = new Board();
-            board.setUser_idx(userIdx);
+            board.setUser(user); 
             board.setTitle(title);
             board.setContent(content);
+            board.setbDatetime(LocalDateTime.now());
     
             Board savedBoard = boardRepository.save(board);
             return ResponseEntity.ok(savedBoard);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server Error: " + e.getMessage());
         }
-=======
+    }
+
     public Board createBoard(@RequestBody Board board) {
         if (board.getUser() == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
         board.setbDatetime(LocalDateTime.now());
         return boardRepository.save(board);  
->>>>>>> a1ffbaffd89640e1f91023150e389255615c23be
     }
-    
-
-
-
-    
-    
     
 
     // ✅ 특정 게시물 bIdx로 조회 (GET /api/board/bIdx?board={bIdx})

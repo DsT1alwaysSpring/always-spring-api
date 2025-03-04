@@ -71,7 +71,7 @@ public class User {
         return userIdx;
     }
     
-    public void setusreIdx(int userIdx) {
+    public void setuserIdx(int userIdx) {
         this.userIdx = userIdx;
     }
     
