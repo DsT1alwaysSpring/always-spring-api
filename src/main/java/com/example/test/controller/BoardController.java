@@ -2,9 +2,11 @@ package com.example.test.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,12 +67,50 @@ public class BoardController {
         }
     }
 
-    // ✅ 게시물 생성 (POST /api/board) -> JSON 방식
+    // // ✅ 게시물 생성 (POST /api/board) -> JSON 방식
+    // @PostMapping
+    // public Board createBoard(@RequestBody Board board) {
+    //     board.setbDatetime(LocalDateTime.now());
+    //     return boardRepository.save(board);  
+    // }
+
+    // ✅ 게시물 생성 (POST /api/board)
     @PostMapping
-    public Board createBoard(@RequestBody Board board) {
-        board.setbDatetime(LocalDateTime.now());
-        return boardRepository.save(board);  
-    }
+    public ResponseEntity<?> createBoard(@RequestBody Map<String, Object> requestData) {
+        try {
+            Long userIdx = ((Number) requestData.get("user_idx")).longValue();
+            String title = (String) requestData.get("title");
+            String content = (String) requestData.get("content");
+    
+            if (userIdx == null || title == null || content == null) {
+                return ResponseEntity.badRequest().body("User, title, and content are required.");
+            }
+    
+            // User 객체 찾기
+            Optional<User> userOptional = userRepository.findById(userIdx);
+            if (!userOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+    
+            User user = userOptional.get();
+    
+            // Board 객체 생성
+            Board board = new Board();
+            board.setUser(user);  // User 객체를 Board에 설정
+            board.setTitle(title);
+            board.setContent(content);
+            board.setbDatetime(LocalDateTime.now());
+            board.setViews(0);  // 기본 조회수 0
+    
+            // Board 저장
+            Board savedBoard = boardRepository.save(board);
+            return ResponseEntity.ok(savedBoard);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server Error: " + e.getMessage());
+        }
+    
+
+
 
     
     

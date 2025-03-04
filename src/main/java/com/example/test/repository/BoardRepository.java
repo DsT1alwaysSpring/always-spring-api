@@ -18,7 +18,10 @@ public interface BoardRepository  extends JpaRepository<Board, Integer>{
     boolean existsBybIdx(int bIdx);
 
     // userIdx를 사용하여 Board를 찾는 메소드
-    List<Board> findByUserUserIdx(int userIdx);
+    //List<Board> findByUserUserIdx(int userIdx);
+    List<Board> findByUserUserIdx(Long userIdx);
+
+    
 
     // 조회수 갱신
     @Modifying

@@ -13,15 +13,19 @@ import lombok.*;
 @AllArgsConstructor
 
 public class Board {
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_seq")    // 인덱스 증가
+    // @SequenceGenerator(name = "board_seq", sequenceName = "BOARD_SEQ", allocationSize = 1)
+    // @Column(name = "B_IDX", nullable = false, unique = true)
+    // private int bIdx;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_seq")    // 인덱스 증가
-    @SequenceGenerator(name = "board_seq", sequenceName = "BOARD_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "B_IDX", nullable = false, unique = true)
     private int bIdx;
 
     @ManyToOne(fetch = FetchType.EAGER) // USER_IDX 외래키 관계 설정
     @JoinColumn(name = "USER_IDX", nullable = false)
-    private User user; 
+    private User user;  // User 객체와 관계 설정
 
     @Column(name = "TITLE", nullable = false)
     private String title;
@@ -30,19 +34,35 @@ public class Board {
     private String content;
 
     @Column(name = "B_DATETIME", nullable = false)
-    private LocalDateTime bDatetime; 
+    private LocalDateTime bDatetime;
 
     @Column(name = "VIEWS")
     private Integer views;
 
     @Column(name = "B_S_PERIOD")
-    private LocalDateTime bSPeriod; 
+    private LocalDateTime bSPeriod;
 
     @Column(name = "B_E_PERIOD")
-    private LocalDateTime bEPeriod; 
+    private LocalDateTime bEPeriod;
 
     @Column(name = "B_STATE")
-    private String bState; 
+    private String bState;
+    
+
+    // public class User {
+    //     private int user_idx;
+    
+    //     // getter
+    //     public int getUser_idx() {
+    //         return user_idx;
+    //     }
+    
+    //     // setter
+    //     public void setUser_idx(int user_idx) {
+    //         this.user_idx = user_idx;
+    //     }
+    // }
+    
 
 
     public int getbIdx() {
@@ -83,6 +103,11 @@ public class Board {
 
     public void setbState(String bState) {
         this.bState = bState;
+    }
+
+    public void setUser_idx(Long userIdx) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setUser_idx'");
     }
     
 }
