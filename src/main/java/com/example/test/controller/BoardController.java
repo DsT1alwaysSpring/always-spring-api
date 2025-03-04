@@ -86,28 +86,17 @@ public class BoardController {
                 return ResponseEntity.badRequest().body("User, title, and content are required.");
             }
     
-            // User 객체 찾기
-            Optional<User> userOptional = userRepository.findById(userIdx);
-            if (!userOptional.isPresent()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            }
-    
-            User user = userOptional.get();
-    
-            // Board 객체 생성
             Board board = new Board();
-            board.setUser(user);  // User 객체를 Board에 설정
+            board.setUser_idx(userIdx);
             board.setTitle(title);
             board.setContent(content);
-            board.setbDatetime(LocalDateTime.now());
-            board.setViews(0);  // 기본 조회수 0
     
-            // Board 저장
             Board savedBoard = boardRepository.save(board);
             return ResponseEntity.ok(savedBoard);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server Error: " + e.getMessage());
         }
+    }
     
 
 
