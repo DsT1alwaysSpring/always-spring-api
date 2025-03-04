@@ -13,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 
 public class Board {
+<<<<<<< HEAD
     // @Id
     // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_seq")    // 인덱스 증가
     // @SequenceGenerator(name = "board_seq", sequenceName = "BOARD_SEQ", allocationSize = 1)
@@ -20,6 +21,15 @@ public class Board {
     // private int bIdx;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
+=======
+
+    // 시퀸스 방식으로 증가시키는 방법
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_seq")    // 인덱스 증가
+    // @SequenceGenerator(name = "board_seq", sequenceName = "BOARD_SEQ", allocationSize = 1)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //identity 방법으로 증가시키는 방법(오라클 table 생성 시 설정 필요)
+>>>>>>> a1ffbaffd89640e1f91023150e389255615c23be
     @Column(name = "B_IDX", nullable = false, unique = true)
     private int bIdx;
 

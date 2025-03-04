@@ -76,6 +76,7 @@ public class BoardController {
 
     // ✅ 게시물 생성 (POST /api/board)
     @PostMapping
+<<<<<<< HEAD
     public ResponseEntity<?> createBoard(@RequestBody Map<String, Object> requestData) {
         try {
             Long userIdx = ((Number) requestData.get("user_idx")).longValue();
@@ -96,6 +97,14 @@ public class BoardController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server Error: " + e.getMessage());
         }
+=======
+    public Board createBoard(@RequestBody Board board) {
+        if (board.getUser() == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        board.setbDatetime(LocalDateTime.now());
+        return boardRepository.save(board);  
+>>>>>>> a1ffbaffd89640e1f91023150e389255615c23be
     }
     
 

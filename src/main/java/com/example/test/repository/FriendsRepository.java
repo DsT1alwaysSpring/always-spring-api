@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.test.model.Friends;
+import com.example.test.model.User;
 
 @Repository
 public interface FriendsRepository extends JpaRepository<Friends, Integer> {
@@ -28,5 +29,9 @@ public interface FriendsRepository extends JpaRepository<Friends, Integer> {
     @Modifying
     @Query("UPDATE Friends f SET f.friendRequestStatus = '1' WHERE f.user.id = :userIdx AND f.fUser = :friendIdx")
     int updateFriendRequestStatus(@Param("userIdx") int userIdx, @Param("friendIdx") int friendIdx);
-    
+
+    // 같은 동네에 사는 사용자 친구 추천
+    @Query("SELECT u FROM User u WHERE u.address = (SELECT u2.address FROM User u2 WHERE u2.userIdx = :userIdx) AND u.userIdx != :userIdx")
+    List<User> findUsersByAddressOfLoggedInUser(@Param("userIdx") int userIdx);    
+
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.test.model.Friends;
+import com.example.test.model.User;
 import com.example.test.repository.FriendsRepository;
 
 @CrossOrigin(origins = "*")  // CORS 허용
@@ -41,6 +42,17 @@ public class FriendsController {
     @GetMapping("/{userIdx}")
     public ResponseEntity<List<Friends>> getFriendsByUserIdAndStatus(@PathVariable int userIdx) {
         List<Friends> friends = friendsRepository.findByUser_UserIdxAndFriendRequestStatus(userIdx, "1"); 
+        if (friends.isEmpty()) {
+            return ResponseEntity.notFound().build();  // 친구가 없으면 404 반환
+        }
+
+        return ResponseEntity.ok(friends);  // 친구 리스트가 있으면 200 OK와 함께 반환
+    }
+
+    // ✅ 친구 추천 : 같은 지역에 사는 사용자를 친구로 추천
+    @GetMapping("FriendRecommendation/{userIdx}")
+    public ResponseEntity<List<User>> getFriendsByAddress(@PathVariable int userIdx) {
+        List<User> friends = friendsRepository.findUsersByAddressOfLoggedInUser(userIdx); 
         if (friends.isEmpty()) {
             return ResponseEntity.notFound().build();  // 친구가 없으면 404 반환
         }

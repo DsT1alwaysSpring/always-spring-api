@@ -1,5 +1,6 @@
 package com.example.test.controller;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,20 +21,32 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
-    // 본인이 속한 채팅방 리스트 출력
-    // @GetMapping("/chatRoomData/{userIdx}")
-    // public ResponseEntity<List<Message>> getAllChatRoomIdxByUserIdx(@PathVariable int userIdx) {
-    //     // 메시지를 채팅방 idx로 조회하고, mDatetime 기준으로 오름차순 정렬
-    //     List<Message> messages = messageRepository.findByChatRoom_userIdx(
-    //         userIdx, Sort.by(Order.asc("mDatetime")) 
-    //     );
+    // ✅ 본인이 속한 채팅방 chatRoomIdx 리스트 출력
+    @GetMapping("/chatRoomData/{userIdx}")
+    public ResponseEntity<List<Integer>> getAllChatRoomIdxByUserIdx(@PathVariable int userIdx) {
+        // 메시지를 채팅방 idx로 조회하고, chatRoomIdx 기준으로 오름차순 정렬
+        List<Integer> chatRoomIdxList = messageRepository.findChatRoomIdxByUserIdx(userIdx);
         
-    //     if (messages.isEmpty()) {
-    //         return ResponseEntity.notFound().build(); // 메시지가 없으면 404
-    //     }
+        if (chatRoomIdxList.isEmpty()) {
+            return ResponseEntity.notFound().build(); // 메시지가 없으면 404
+        }
 
-    //     return ResponseEntity.ok(messages); // 메시지 있으면 200 OK와 함께 반환
-    // }
+        chatRoomIdxList.sort(Comparator.naturalOrder());
+        return ResponseEntity.ok(chatRoomIdxList); // 메시지 있으면 200 OK와 함께 반환
+    }
+
+    // ✅ 본인이 속한 채팅방의 상대방 이름과 닉네임 출력
+    @GetMapping("/chatRoomNickName/{userIdx}")
+    public ResponseEntity<List<String>> getAllChatRoomIdxNickNameByUserIdx(@PathVariable int userIdx) {
+        List<String> chatRoomIdxNickNameList = messageRepository.findFriendNicknamesByUserIdx(userIdx);
+        
+        if (chatRoomIdxNickNameList.isEmpty()) {
+            return ResponseEntity.notFound().build(); // 메시지가 없으면 404
+        }
+
+        chatRoomIdxNickNameList.sort(Comparator.naturalOrder());
+        return ResponseEntity.ok(chatRoomIdxNickNameList); // 메시지 있으면 200 OK와 함께 반환
+    }
 
     // ✅ 채팅방으로 대화 조회
     @GetMapping("/chatRoom/{chatRoomIdx}")
@@ -46,7 +59,7 @@ public class MessageController {
         return ResponseEntity.ok(messages);  
     }
 
-    // 새로운 메시지 생성 -> 친구 idx와 본인Idx 가져와서, 채팅방 번호 통일시켜야 함[수정 줌]
+    // 새로운 메시지 생성 -> 친구 idx와 본인Idx 가져와서, 채팅방 번호 통일시켜야 함[수정 중]
     // @PostMapping
     // public ResponseEntity<Message> createMessage(@RequestBody Message message, int userIdx1, int userIdx2) {
         
