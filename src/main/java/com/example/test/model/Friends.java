@@ -14,8 +14,9 @@ import lombok.*;
 
 public class Friends {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
-    @Column(name = "F_IDX", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "f_seq")    
+    @SequenceGenerator(name = "f_seq", sequenceName = "F_SEQ", allocationSize = 1)
+    @Column(name = "FRIEND_IDX", nullable = false, unique = true)
     private int fIdx;
 
     @ManyToOne(fetch = FetchType.EAGER) // USER_IDX 외래키 관계 설정
@@ -25,9 +26,12 @@ public class Friends {
     @Column(name = "F_USER_IDX", nullable = false)
     private int fUser;
 
+    @Column(name = "FRIEND_REQUEST_STATUS") 
+    private String friendRequestStatus;
+
     @Column(name = "F_DATETIME", nullable = false)
     private LocalDate fDatatime;
-    
+
 
     public Friends(User user, int fUser) {
         this.user = user;
@@ -59,5 +63,12 @@ public class Friends {
         this.fDatatime = fDatatime;
     }
 
+    public String getFriendRequestStatus(){
+        return friendRequestStatus;
+    }
+
+    public void setFriendRequestStatus(String friendRequestStatus){
+        this.friendRequestStatus = friendRequestStatus;
+    }
     
 }

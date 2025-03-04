@@ -14,12 +14,14 @@ import lombok.*;
 
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_seq")   
+    @SequenceGenerator(name = "m_seq", sequenceName = "M_SEQ", allocationSize = 1)
     @Column(name="M_IDX", nullable=false, unique=true)    
     private int mIdx;
 
-    @Column(name="USER_IDX", nullable=false)    
-    private int userIdx;
+    @ManyToOne(fetch = FetchType.EAGER) // USER_IDX 외래키 관계 설정
+    @JoinColumn(name = "USER_IDX", nullable = false) 
+    private User user;
 
     @Column(name="CHAT_ROOM_IDX", nullable=false)    
     private int chatRoomIdx;
@@ -30,18 +32,41 @@ public class Message {
     @Column(name = "M_DATETIME")
     private LocalDateTime mDatetime;
 
-    public Message(int userIdx, String m_content) {
-        this.userIdx = userIdx;
+    public Message(User user, String m_content) {
+        this.user = user;
         this.mContent = m_content;
 
         this.chatRoomIdx += 1;
         this.mDatetime = LocalDateTime.now();
     }
 
-    public void setId(int userIdx) {
-        this.userIdx = userIdx;
+    public void setId(User user) {
+        this.user = user;
     }
 
+    public int getmIdx() {
+        return mIdx;
+    }
 
+    public void setmIdx(int mIdx) {
+        this.mIdx = mIdx;
+    }
+
+    public String getmContent() {
+        return mContent;
+    }
+
+    public void setmContent(String mContent) {
+        this.mContent = mContent;
+    }
+
+    public LocalDateTime getmDatetime() {
+        return mDatetime;
+    }
+
+    public void setmDatetime(LocalDateTime mDatetime) {
+        this.mDatetime = mDatetime;
+    }
+    
     
 }
