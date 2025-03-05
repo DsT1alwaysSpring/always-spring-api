@@ -36,4 +36,4 @@ build/
 resources/*.json
 
 ### FirebaseConfig.java ###
-/config/FirebaseConfig.java
+/src/main/java/com/example/test/config/FirebaseConfig.java
