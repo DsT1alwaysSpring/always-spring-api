@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Ignore all .json files in the resources directory ###
+resources/*.json
+
+### FirebaseConfig.java ###
+/config/FirebaseConfig.java
