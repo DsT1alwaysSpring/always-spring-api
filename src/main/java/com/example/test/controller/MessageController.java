@@ -1,4 +1,5 @@
 package com.example.test.controller;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.test.model.Message;
+import com.example.test.model.User;
 import com.example.test.repository.MessageRepository;
+import com.example.test.repository.UserRepository;
 
 @CrossOrigin(origins = "*")  // CORS 허용
 @RestController
@@ -18,6 +21,9 @@ public class MessageController {
 
     @Autowired
     private MessageRepository messageRepository;
+
+        @Autowired
+    private UserRepository userRepository;
 
     // ✅ 본인이 속한 채팅방 chatRoomIdx 리스트 출력
     @GetMapping("/chatRoomData/{userIdx}")
@@ -57,26 +63,55 @@ public class MessageController {
         return ResponseEntity.ok(messages);  
     }
 
-    // 새로운 메시지 생성 -> 친구 idx와 본인Idx 가져와서, 채팅방 번호 통일시켜야 함[수정 중]
-    // @PostMapping
-    // public ResponseEntity<Message> createMessage(@RequestBody Message message, int userIdx1, int userIdx2) {
+    // ✅ 새로운 메시지 생성 & 채팅방 생성
+    @PostMapping("createMessage/{messageContent}/{userIdx1}/{userIdx2}")
+    public ResponseEntity<Message> createMessage(@PathVariable String messageContent,
+        @PathVariable Integer userIdx1,
+        @PathVariable Integer userIdx2) {
+
+        // 함께 존재하는 채팅방이 있는지 확인
+        Integer chatRoomNum = messageRepository.findChatRoomIdxByUserIdxs(userIdx1, userIdx2);
+    
+        // userIdx1과 userIdx2를 사용하여 User 객체를 조회
+        User userData1 = userRepository.findById(userIdx1)
+                .orElseThrow(() -> new RuntimeException("User not found for id: " + userIdx1));
+        User userData2 = userRepository.findById(userIdx2)
+                .orElseThrow(() -> new RuntimeException("User not found for id: " + userIdx2));
+    
+        // 메시지 객체 생성
+        Message message = new Message();
+    
+        if (chatRoomNum != null && chatRoomNum > 0) {
+            // 이미 존재하는 채팅방이 있을 경우 해당 채팅방 번호를 메시지에 설정
+            message.setChatRoomIdx(chatRoomNum);  
+            message.setUser(userData1); 
+            message.setmContent(messageContent);
+            message.setmDatetime(LocalDateTime.now());
+            messageRepository.save(message);
+        } else {
+            // 채팅방이 존재하지 않으면 새로운 채팅방 생성
+            Integer highestChatRoomIdx = messageRepository.findHighestChatRoomIdx(); // 가장 높은 chatRoomIdx 조회
+            int newChatRoomIdx = (highestChatRoomIdx != null ? highestChatRoomIdx : 0) + 1; // 새로운 채팅방 번호
+    
+            // 새로운 채팅방에 해당하는 첫 번째 메시지 설정
+            message.setChatRoomIdx(newChatRoomIdx);
+            message.setUser(userData1);  
+            message.setmContent(messageContent);
+            message.setmDatetime(LocalDateTime.now());
+            messageRepository.save(message); 
+    
+            // 두 번째 사용자에 해당하는 메시지 설정 (userIdx2)
+            Message message2 = new Message();
+            message2.setChatRoomIdx(newChatRoomIdx);
+            message2.setUser(userData2);  
+            message2.setmDatetime(LocalDateTime.now());
+            messageRepository.save(message2);  
+        }
+    
+        return ResponseEntity.ok(message);
+    }
+    
         
-    //     // 함께 존재하는 채팅방이 있는지 확인
-
-    //     // userIdx1의 채팅방idx 조회 
-    //     // userIdx2의 채팅방idx 조회
-
-    //     // 해당 리스트끼리 일치하는 값 있으면, exist(boolean) 값 true -> if(!exist){return 0;} 
-    //     //else{동시에 같은 useridx1과 useridx2가 chatroomidx(현재 가장 높은 값 조회 + 1)를 가지도록 설정 후 message 생성}
-    //     boolean exist = messageRepository.findByUser1_UserIdxAndUser2_UserIdx(userIdx1, userIdx2);
-    //     if(!exist){
-
-    //     }
-
-    //     Message savedMessage = messageRepository.save(message);
-    //     return ResponseEntity.ok(savedMessage);
-    // }
-
     // ✅ mIdx로 구체적인 메세지 가져오기
     @GetMapping("/{mIdx}")
     public ResponseEntity<Message> getMessageById(@PathVariable int mIdx) {

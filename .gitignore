@@ -35,6 +35,7 @@ build/
 # Ignore all .json files in resources directory
 #/src/main/resources/*.json
 src/main/resources/hi.json
+src/main/resources/alwaysspring-d053b-firebase-adminsdk-fbsvc-07f86ec058.json
 
 ### FirebaseConfig.java ###
 /src/main/java/com/example/test/config/FirebaseConfig.java

@@ -42,6 +42,17 @@ public interface MessageRepository  extends JpaRepository<Message, Integer> {
     ")")
     List<String> findFriendNicknamesByUserIdx(@Param("userIdx") int userIdx);
 
+    // [createMessage] userIdx1,2 로 chatRoomIdx 유무 조회
+    @Query("SELECT DISTINCT m.chatRoomIdx FROM Message m WHERE m.chatRoomIdx IN (" +
+    "SELECT m1.chatRoomIdx FROM Message m1 WHERE m1.user.id = :userIdx1) " +
+    "AND m.chatRoomIdx IN (" +
+    "SELECT m2.chatRoomIdx FROM Message m2 WHERE m2.user.id = :userIdx2)")
+    Integer findChatRoomIdxByUserIdxs(@Param("userIdx1") int userIdx1, @Param("userIdx2") int userIdx2);
+
+    // [createMessage] 가장 높은 chatRoomIdx를 조회하는 쿼리
+    @Query("SELECT MAX(m.chatRoomIdx) FROM Message m")
+    int findHighestChatRoomIdx();
+
     // chatRoomIdx로 채팅방 삭제
     @Transactional
     void deleteByChatRoomIdx(int chatRoomIdx);
