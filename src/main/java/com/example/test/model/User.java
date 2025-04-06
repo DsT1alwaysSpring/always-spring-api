@@ -48,24 +48,6 @@ public class User {
     
         @Column(name = "PURPOSE")
         private String purpose;
-
-
-    // JSON 데이터를 처리할 수 있는 생성자
-    //@JsonCreator
-    // public User(@JsonProperty("name")String name, String nickname, LocalDate birth, String phone, 
-    //         String address, String password, String profile, String appeal, String keyword, String purpose) {
-    //     this.name = name;
-    //     this.nickname = nickname;
-    //     this.birth = birth;
-    //     this.phone = phone;
-    //     this.address = address;
-    //     this.password = password;
-
-        // this.profile = (profile != null) ? profile : "미선택";
-        // this.appeal = (appeal != null) ? appeal : "미선택";
-        // this.keyword = (appeal != null) ? keyword : "미선택";
-        // this.purpose = (appeal != null) ? purpose : "미선택";
-    // }
     
     public int getuserIdx() {
         return userIdx;
