@@ -43,23 +43,6 @@ public class Board {
 
     @Column(name = "B_STATE")
     private String bState;
-    
-
-    // public class User {
-    //     private int user_idx;
-    
-    //     // getter
-    //     public int getUser_idx() {
-    //         return user_idx;
-    //     }
-    
-    //     // setter
-    //     public void setUser_idx(int user_idx) {
-    //         this.user_idx = user_idx;
-    //     }
-    // }
-    
-
 
     public int getbIdx() {
         return bIdx;
